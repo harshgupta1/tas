@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<context:component-scan base-package="com.til.service.common" />
+	<context:component-scan base-package="com.til.service.common.dao" />
+    <context:component-scan base-package="com.til.service.common.dao.hibernate" />
+    <context:component-scan base-package="com.til.service.common.dao.hibernate.entity" />
+	<context:component-scan base-package="com.til.service.facebook" />
+	<context:component-scan base-package="com.til.service.twitter" />
+	<context:component-scan base-package="com.til.service.toi" />
+	
+	<!-- creates a java.util.Properties instance with values loaded from the supplied location -->
+	<util:properties id="jdbcConfiguration" location="classpath:jdbc.properties" />
+	<context:property-placeholder properties-ref="jdbcConfiguration"  />
+	<!--
+      Including this aspectj-autoproxy element will cause spring to automatically
+      create proxies around any beans defined in this file that match the pointcuts
+      of any aspects defined in this file.
+    -->
+    <aop:aspectj-autoproxy/>
+
+    <!--
+      Declare the TimingAspect that we want to weave into the other beans
+      defined in this config file.
+     -->
+    <!-- <bean id="timingAspect" class="org.perf4j.log4j.aop.TimingAspect"/> -->
+   
+    
+	<!-- Since servlet-context defines this tag, beans defined in that file will be able to set the 
+	value of any property using this syntax 
+	@Value("${facebook.authorizeurl}") 
+			rather than
+	@Value("#{jdbcConfiguration['facebook.redirect_uri']}")  
+	<context:property-placeholder properties-ref="jdbcConfiguration"  />
+	 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="#{jdbcConfiguration['jdbc.driverClassName']}"/>
+        <property name="jdbcUrl" value="#{jdbcConfiguration['jdbc.url']}"/>
+        <property name="user" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+        <property name="initialPoolSize" value="#{jdbcConfiguration['jdbc.initialPoolSize']}"/>
+		<property name="minPoolSize" value="#{jdbcConfiguration['jdbc.minPoolSize']}"/>
+		<property name="maxPoolSize" value="#{jdbcConfiguration['jdbc.maxPoolSize']}"/>
+		<property name="maxIdleTime" value="#{jdbcConfiguration['jdbc.maxIdleTime']}"/>
+		<property name="acquireIncrement" value="#{jdbcConfiguration['jdbc.acquireIncrement']}"/>
+		<property name="idleConnectionTestPeriod" value="#{jdbcConfiguration['jdbc.idleConnectionTestPeriod']}"/>
+		<property name="maxStatements" value="#{jdbcConfiguration['jdbc.maxStatements']}"/>
+		<property name="numHelperThreads" value="#{jdbcConfiguration['jdbc.numHelperThreads']}"/>
+		
+		<property name="autoCommitOnClose" value="false"/>
+    </bean>
+    
+    <!-- JNDI DataSource for J2EE environments -->
+    <!--
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/stream"/>
+    </bean>
+    -->
+    <bean id="indexInterceptor" class="com.til.hibernate.interceptor.IndexInterceptor" />
+    
+     <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        
+        <!-- Refer to Interceptor Here -->
+	    <property name="entityInterceptor">
+	        <ref bean="indexInterceptor"/>
+	    </property>
+        
+        <property name="annotatedClasses">
+        	<list>
+        		<value>com.til.service.common.dao.hibernate.entity.Website</value>
+        		<value>com.til.service.common.dao.hibernate.entity.TopicPage</value>
+        		<value>com.til.service.common.dao.hibernate.entity.TopicPageAdditionalFeeds</value>
+        		<value>com.til.service.common.dao.hibernate.entity.Article</value>
+        		<value>com.til.service.common.dao.hibernate.entity.TopicPageArticle</value>
+        		<value>com.til.service.common.dao.hibernate.entity.TopicPageHistory</value>
+        		<value>com.til.service.common.dao.hibernate.entity.User</value>
+        		<value>com.til.service.common.dao.hibernate.entity.Role</value>
+        		<value>com.til.service.common.dao.hibernate.entity.Emails</value>
+        		<!-- <value>com.til.service.common.dao.hibernate.entity.WebsiteRole</value> -->
+        	</list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">#{jdbcConfiguration['hibernate.dialect']}</prop>
+                <prop key="hibernate.show_sql">#{jdbcConfiguration['hibernate.show_sql']}</prop>
+                <prop key="hibernate.generate_statistics">#{jdbcConfiguration['hibernate.generate_statistics']}</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+	
+	<bean id="abstractTxDefination" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" lazy-init="true" abstract="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="register*">PROPAGATION_REQUIRED</prop>
+				<prop key="incr*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+				<prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="websiteDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="websiteDaoImpl" class="com.til.service.common.dao.hibernate.WebsiteDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>	
+    
+    <bean id="topicPageDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="topicPageDaoImpl" class="com.til.service.common.dao.hibernate.TopicPageDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>	
+    
+    <bean id="topicPageAdditionalFeedsDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="topicPageAdditionalFeedsDaoImpl" class="com.til.service.common.dao.hibernate.TopicPageAdditionalFeedsDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>
+    
+    <bean id="articleDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="articleDaoImpl" class="com.til.service.common.dao.hibernate.ArticleDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>	
+    
+    <bean id="topicPageArticleDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="topicPageArticleDaoImpl" class="com.til.service.common.dao.hibernate.TopicPageArticleDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>	
+    
+    <bean id="topicPageHistoryDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="topicPageHistoryDaoImpl" class="com.til.service.common.dao.hibernate.TopicPageHistoryDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>
+    
+    <bean id="userDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="userDaoImpl" class="com.til.service.common.dao.hibernate.UserDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>
+    
+    <bean id="roleDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="roleDaoImpl" class="com.til.service.common.dao.hibernate.RoleDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>
+    
+    <bean id="emailsDao" parent="abstractTxDefination">
+        <property name="target">
+        	<bean id="emailDaoImpl" class="com.til.service.common.dao.hibernate.EmailsDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory"/>
+		    </bean>
+        </property>
+    </bean>
+    
+    <!--Use JAXB OXM marshaller to marshall/unmarshall following class-->
+	<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+			    <value>com.til.service.toi.api.DayLifeFeeds</value>
+			    <value>com.til.service.toi.api.DayLifeFeedsV2</value>
+			    <value>com.til.service.common.api.Rss2Feeds</value>
+			    <value>com.til.service.common.api.TOIMinifiedURL</value>
+			    <value>com.til.service.common.api.BreakingNews</value>
+			    <value>com.til.service.common.api.TwitterUser</value>
+			</list>
+		</property>
+	</bean>		
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<!--<property name="session" ref="mailSession"/>-->
+		 
+		<property name="defaultEncoding" value="#{jdbcConfiguration['mail.defaultEncoding']}" />
+		<property name="host" value="#{jdbcConfiguration['mail.host']}" />
+		<property name="port" value="#{jdbcConfiguration['mail.port']}" />
+		<property name="protocol" value="#{jdbcConfiguration['mail.protocol']}" />
+	<!--	<property name="username" value="#{jdbcConfiguration['mail.username']}" />
+		<property name="password" value="#{jdbcConfiguration['mail.password']}" />-->
+		
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">#{jdbcConfiguration['mail.debug']}</prop>
+				<!-- <prop key="mail.#{jdbcConfiguration['mail.protocol']}.auth">#{jdbcConfiguration['mail.smtp-auth']}</prop> -->
+			</props>
+		</property>
+		
+	</bean>
+	
+</beans>

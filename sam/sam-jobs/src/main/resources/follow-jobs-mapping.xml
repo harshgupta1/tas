@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<util:map id="follow-jobs-mapping">
+		<!-- 
+			IMP: Comment Added by Harsh
+			In reality this file is not supposed to be change unless a new implementation of twitter or facebook comes or you want to schedule a group of accounts in some cron. 
+			If requirement is just to change the cron schedule for a particular account, then it can easily be changed by defining a new scheduler in job-scheduling-data.xml file
+			and uploading that single job scheduler data, setting it against socialcode twitterForID/facebookForID.
+			
+			key=job.<socialAppName>.<siteCode>.<socialCode>.beanName
+			value=<Spring service bean name>
+		 -->
+		<entry key="job.twitter.toi.twitterForID.beanName" value="toiTwitterCategoryFollowImpl" />
+		<entry key="job.twitter.toi.twitter.beanName" value="toiTwitterCategoryFollowImpl" />
+		<entry key="job.twitter.toi.journalist.beanName" value="toiTwitterCategoryFollowImpl" />
+		<entry key="job.twitter.toi.toibreakingnews.beanName" value="toiTwitterBreakingNewsFollowImpl" />
+		<entry key="job.twitter.toi.toiblogs.beanName" value="toiBlogsTwitterCategoryFollowImpl" />
+		
+		<entry key="job.twitter.toi-oly.twitter.beanName" value="twitterOLYFeedPush" />
+		<entry key="job.facebook.toi-oly.facebook.beanName" value="facebookOLYFeedPush" />
+		
+		<entry key="job.facebook.toi.facebookForID.beanName" value="toiFacebookCategoryFollowImpl" />
+		<entry key="job.facebook.toi.facebook.beanName" value="toiFacebookCategoryFollowImpl" />
+		<entry key="job.facebook.toil1.facebook.beanName" value="toiFacebookCategoryFollowImpl" />
+		<entry key="job.facebook.toimm.facebook.beanName" value="toiFacebookCategoryFollowImpl" />
+		<entry key="job.facebook.toi.journalist.beanName" value="toiFacebookCategoryFollowImpl" />
+		
+		<entry key="job.facebook.toi.topic.beanName" value="toiFacebookTopicFollowImpl" /><!-- TODO -->
+		<entry key="job.facebook.toi.toiblogs.beanName" value="toiBlogsFacebookCategoryFollowImpl" />
+		<entry key="job.facebook.toil1.toiblogs.beanName" value="toiBlogsFacebookCategoryFollowImpl" />
+		
+	</util:map>
+</beans>

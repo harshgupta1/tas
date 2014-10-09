@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.til</groupId>
+	<artifactId>social-audience-manager</artifactId>
+	<packaging>pom</packaging>
+	<name>Social Audience Manager</name>
+	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<properties>
+		<java-version>1.6</java-version>
+		<junit-version>4.7</junit-version>
+		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
+		<spring-security.version>3.0.5.RELEASE</spring-security.version>
+		<org.aspectj-version>1.6.8</org.aspectj-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<log4j-version>1.2.17</log4j-version>
+		<hibernate-version>3.6.0.Final</hibernate-version>
+		<c3p0-version>0.9.1.1</c3p0-version>
+		<quartz-version>2.1.6</quartz-version>
+		<mysql-connector-version>5.1.16</mysql-connector-version>
+		<org-mockito-version>1.9.5</org-mockito-version>
+		<org-codehaus-jackson-version>1.9.11</org-codehaus-jackson-version>
+		<net-sf-ezmorph-version>1.0.6</net-sf-ezmorph-version>
+		<org-twitter4j-version>3.0.5</org-twitter4j-version>
+		<com-google-http-client-version>1.13.1-beta</com-google-http-client-version>
+		<com-google-apis-version>v2-rev29-1.13.2-beta</com-google-apis-version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>sam-core</module>
+		<module>sam-web</module>
+		<module>sam-webapp</module>
+		<module>sam-jobs</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.til</groupId>
+				<artifactId>sam-core</artifactId>
+				<version>1.0.0-BUILD-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.til</groupId>
+				<artifactId>sam-jobs</artifactId>
+				<version>1.0.0-BUILD-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.til</groupId>
+				<artifactId>sam-web</artifactId>
+				<version>1.0.0-BUILD-SNAPSHOT</version>
+			</dependency>
+			
+			<!-- Servlet -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>2.1</version>
+				<scope>provided</scope>
+			</dependency>
+	
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
+			</dependency>
+		
+			<!-- Spring -->
+			<!-- Core utilities used by other modules. Define this if you use Spring 
+				Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+	
+			<!-- Expression Language (depends on spring-core) Define this if you use 
+				Spring Expression APIs (org.springframework.expression.*) -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+	
+			<!-- Bean Factory and JavaBeans utilities (depends on spring-core) Define 
+				this if you use Spring Bean APIs (org.springframework.beans.*) -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+	
+			<!-- Aspect Oriented Programming (AOP) Framework (depends on spring-core, 
+				spring-beans) Define this if you use Spring AOP APIs (org.springframework.aop.*) -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+	
+			<!-- Application Context (depends on spring-core, spring-expression, spring-aop, 
+				spring-beans) This is the central artifact for Spring's Dependency Injection 
+				Container and is generally always defined -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${org.springframework-version}</version>
+				<exclusions>
+					<!-- Exclude Commons Logging in favor of SLF4j -->
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- Various Application Context utilities, including EhCache, JavaMail, 
+				Quartz, and Freemarker integration Define this if you need any of these integrations -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${org.springframework-version}</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${org.springframework-version}</version>
+				<scope>test</scope>
+			</dependency>
+	
+			<!-- Spring Security -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
+	
+			<!--Twitter -->
+			<dependency>
+				<groupId>org.twitter4j</groupId>
+				<artifactId>twitter4j-core</artifactId>
+				<version>${org-twitter4j-version}</version>
+			</dependency>
+			
+			<!--Google Apis -->
+			<dependency>
+				<groupId>com.google.http-client</groupId>
+				<artifactId>google-http-client</artifactId>
+				<version>${com-google-http-client-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.google.http-client</groupId>
+				<artifactId>google-http-client-jackson</artifactId>
+				<version>${com-google-http-client-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.google.apis</groupId>
+				<artifactId>google-api-services-oauth2</artifactId>
+				<version>${com-google-apis-version}</version>
+			</dependency>
+		
+			<!-- AspectJ -->
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${org.aspectj-version}</version>
+			</dependency>
+	
+			<!-- MYSQL Connector -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-version}</version>
+			</dependency>
+	
+			<!-- Hibernate -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-c3p0</artifactId>
+				<version>${hibernate-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>c3p0</groupId>
+						<artifactId>c3p0</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>c3p0</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>${c3p0-version}</version>
+			</dependency>
+	
+			<!-- Hibernate gives you a choice of bytecode providers between cglib and 
+				javassist -->
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.6.0.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.2.0.Final</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>${quartz-version}</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>1.0.0.GA</version>
+			</dependency>
+	
+			<!-- Logging -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${org.slf4j-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${org.slf4j-version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${org.slf4j-version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.mail</groupId>
+						<artifactId>mail</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.jms</groupId>
+						<artifactId>jms</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.jdmk</groupId>
+						<artifactId>jmxtools</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.jmx</groupId>
+						<artifactId>jmxri</artifactId>
+					</exclusion>
+				</exclusions>
+				<scope>runtime</scope>
+			</dependency>
+	
+			<!-- Below 2 dependenices are used for uploading file -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<!-- perf4j dependency UNCOMMENT IN PRODUCTION -->
+			<dependency>
+				<groupId>org.perf4j</groupId>
+				<artifactId>perf4j</artifactId>
+				<version>0.9.13</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>commons-jexl</groupId>
+				<artifactId>commons-jexl</artifactId>
+				<version>1.1</version>
+				<scope>runtime</scope>
+			</dependency>
+	
+			<!-- UNCOMMENT IN PRODUCTION -->
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>2.2</version>
+				<!-- <scope>runtime</scope> -->
+			</dependency>
+	
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.1</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.6</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>net.sf.json-lib</groupId>
+				<artifactId>json-lib</artifactId>
+				<version>2.4</version>
+				<classifier>jdk15</classifier>
+			</dependency>
+	
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-xjc</artifactId>
+				<version>2.2.4-1</version>
+			</dependency>
+	
+			<!-- @Inject -->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+	
+			<!-- Test -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit-version}</version>
+				<scope>test</scope>
+			</dependency>
+	
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${org-codehaus-jackson-version}</version>
+			</dependency>
+			
+			<dependency>
+		        <groupId>net.sf.ezmorph</groupId>
+		        <artifactId>ezmorph</artifactId>
+		        <version>${net-sf-ezmorph-version}</version>
+		    </dependency>
+		    
+		    <dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.1</version>
+			</dependency>
+		  
+			<!-- This is for mocking the service -->
+	 		<dependency>
+			    <groupId>org.mockito</groupId>
+			    <artifactId>mockito-all</artifactId>
+			    <version>${org-mockito-version}</version>
+			    <scope>test</scope>
+			</dependency>
+			
+			<dependency>
+			    <groupId>com.jayway.jsonpath</groupId>
+			    <artifactId>json-path-assert</artifactId>
+			    <version>0.8.1</version>
+			    <scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<repositories>
+		<!-- For testing against latest Spring snapshots -->
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!-- For developing against latest Spring milestones -->
+		<repository>
+			<id>org.springframework.maven.milestone</id>
+			<name>Spring Maven Milestone Repository</name>
+			<url>http://maven.springframework.org/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>twitter4j.org</id>
+			<name>twitter4j.org Repository</name>
+			<url>http://twitter4j.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!-- <repository> <id>sf_release</id> <name>Json-lib repo @ sourceforge.net</name> 
+			<url>scp://ssh.sf.net/home/groups/j/js/json-lib/htdocs/m2/repo/release</url> 
+			</repository> -->
+	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warName>socialaudiencemanager</warName>
+					<webappDirectory>C:/Tomcat/apache-tomcat-7.0.23/webapps/socialaudiencemanager</webappDirectory>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<executions> <execution> <id>install</id> <phase>install</phase> <goals> 
+				<goal>sources</goal> </goals> </execution> </executions> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<junitArtifactName>junit:junit</junitArtifactName>
+					<excludes>
+						<exclude>**/*_Roo_*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.0-beta-1</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+<!-- goals to execute for packaging application -->
+<!-- -Dmaven.test.skip.exec=true clean package -->

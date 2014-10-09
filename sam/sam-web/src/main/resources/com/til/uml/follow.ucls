@@ -1,0 +1,88 @@
+<class-diagram version="1.0.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.til.service.toi.api.TOICategoryFollowImpl" 
+    project="spring" file="/spring/src/main/java/com/til/service/toi/api/TOICategoryFollowImpl.java" binary="false">    
+    <position x="-1" y="342" width="192" height="218"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.til.service.toi.api.TOITopicFollowImpl" project="spring" 
+    file="/spring/src/main/java/com/til/service/toi/api/TOITopicFollowImpl.java" binary="false">    
+    <position x="936" y="342" width="191" height="216"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="com.til.service.facebook.api.FacebookCategoryPageImpl" 
+    project="spring" file="/spring/src/main/java/com/til/service/facebook/api/FacebookCategoryPageImpl.java" 
+    binary="false">    
+    <position x="339" y="392" width="182" height="115"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="com.til.service.facebook.api.FacebookOpenGraphPageImpl" 
+    project="spring" file="/spring/src/main/java/com/til/service/facebook/api/FacebookOpenGraphPageImpl.java" 
+    binary="false">    
+    <position x="623" y="392" width="195" height="115"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="com.til.service.facebook.FacebookPage" project="spring" 
+    file="/spring/src/main/java/com/til/service/facebook/FacebookPage.java" binary="false">    
+    <position x="452" y="-12" width="243" height="99"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="com.til.service.facebook.api.FacebookPageImpl" 
+    project="spring" file="/spring/src/main/java/com/til/service/facebook/api/FacebookPageImpl.java" binary="false">    
+    <position x="465" y="127" width="209" height="229"/>    
+    <display autosize="false" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="com.til.service.common.api.Follow" project="spring" 
+    file="/spring/src/main/java/com/til/service/common/api/Follow.java" binary="false">    
+    <position x="563" y="-47" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <realization>    
+    <bendpoint x="1032" y="-47"/>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </realization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </generalization>  
+  <realization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </realization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </generalization>  
+  <realization>    
+    <bendpoint x="95" y="-47"/>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </realization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

@@ -1,0 +1,78 @@
+<!-- 
+Defines the Application Editor/Admin UI menu and roles allowed to use each 
+menu. See also, admin-menu.xml, which defines the Global Admin menu.
+Each menu or menu item is governed by four attrbibutes:
+
+    1) roles: these are the global roles the are allowed to view item
+       - superadmin:  	the Application global-wide admin role
+       - admin:  		the Application site-wide admin role
+       - editor: 		the normal user role
+       Default is roles="superadmin,admin,editor"
+       Use "any" to indicate that role is not required to view it
+       
+    2) perms: these are the website specific permissions required to view item
+       - editor:  author and allowed to manage current website
+       - author:  allowed to edit any part of the current website, except users
+       - limited: allowed only to post drafts in current website
+       Default is perms="admin,author"
+       Use "any" to indicate that website perms are not required to view item
+       
+    3) enable property: if true, show this menu
+
+    4) disable property: if true, don't show this menu
+-->
+<menu-bar>
+    
+    <menu name="tabbedmenu.manager" perms="limited" roles="editor">
+        
+        <menu-item action="listWebsite"   
+                   name="tabbedmenu.manager.listWebsite" 
+                   roles="editor"
+                   perms="author"
+                   subactions="addEditWebsite" />
+                   
+        <menu-item action="listTopic"   
+                   name="tabbedmenu.manager.listTopic" 
+                   roles="editor"
+                   perms="author"
+                   subactions="addEditTopic,sendArticle,scheduleMessage" />
+        
+        <menu-item action="listArticle"   
+                   name="tabbedmenu.manager.listArticle" 
+                   roles="editor"
+                   perms="author"
+                   subactions="addEditArticle" />
+
+        <menu-item action="articleHistory"   
+                   name="tabbedmenu.manager.articleHistory" 
+                   roles="editor"
+                   perms="author" />
+
+        <menu-item action="listScheduledArticle"   
+                   name="tabbedmenu.manager.scheduledArticle" 
+                   roles="editor"
+                   perms="author" />
+    </menu>
+    
+    <menu name="tabbedmenu.administration" perms="limited" roles="editor">
+    	
+    	<menu-item action="analytics" 
+                   name="tabbedmenu.manager.analytics" 
+                   roles="editor"
+                   perms="limited" 
+                   subactions="analytics" />
+                   
+    	<menu-item action="listUser" 
+                   name="tabbedmenu.manager.userList" 
+                   roles="editor"
+                   perms="limited" 
+                   subactions="addEditUser" />
+        
+        <menu-item action="listRole" 
+                   name="tabbedmenu.manager.roleList" 
+                   roles="editor"
+                   perms="limited" 
+                   subactions="addEditRole"/>
+                   
+    </menu>
+</menu-bar>

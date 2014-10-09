@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <!-- AspectJ pointcut expression that locates our "post" method and applies security that way
+        <protect-pointcut expression="execution(* bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+        -->
+    </global-method-security>
+	
+	<!--  Use auto-config attribute, which is just a shorthand syntax for: -->
+	<!-- 
+		<http>
+		<form-login />
+		<http-basic />
+		<logout />
+		</http>
+	 -->
+    <http use-expressions="false" auto-config="true">
+    	<intercept-url pattern="/css/*" />
+    	<intercept-url pattern="/js/*" />
+    	<intercept-url pattern="/images/*" />
+    	<intercept-url pattern="/login.jsp*" />
+        <!--<intercept-url pattern="/secure/extreme/**" access="hasRole('ROLE_SUPERVISOR')"/>
+        <intercept-url pattern="/secure/**" access="isAuthenticated()" />
+        --><!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead
+        <intercept-url pattern="/listAccounts.html" access="isRememberMe()" />
+        <intercept-url pattern="/post.html" access="hasRole('ROLE_TELLER')" />
+        -->
+        <intercept-url pattern="/addeditrole" access="ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listuser" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/addeditwebsite" access="ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listwebsite" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/addedittopic" access="ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listtopic" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/sendArticle" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/addeditarticle" access="ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listarticle" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/articleHistory" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/scheduleMessage" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listScheduledArticle" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/listrole" access="ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/edituser" access="ROLE_AUTHOR,ROLE_EDITOR,ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/addedituser" access="ROLE_ADMIN,ROLE_SUPERADMIN" />
+        <intercept-url pattern="/welcome" access="ROLE_ADMIN,ROLE_SUPERADMIN,ROLE_AUTHOR,ROLE_EDITOR" />
+        <intercept-url pattern="/authorize" access="ROLE_SUPERADMIN,ROLE_ADMIN" />
+        <intercept-url pattern="/getaccesstoken" access="ROLE_SUPERADMIN,ROLE_ADMIN" />
+        <intercept-url pattern="/analytics" access="ROLE_SUPERADMIN,ROLE_ADMIN" />
+        <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?login_error=1" default-target-url="/index.jsp" always-use-default-target='false'/>
+        <logout />
+        <remember-me />
+        <!-- Uncomment to limit the number of sessions a user can have 
+	        <session-management invalid-session-url="/login.jsp">
+	            <concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
+	        </session-management>
+		-->
+    </http>
+	
+	<!-- <http create-session="never" auto-config="false" realm="Restricted Service" access-decision-manager-ref="apiAuthenticationManager">
+        <intercept-url pattern="/api/**" access="ROLE_REST" />
+        <http-basic />
+        <logout />
+    </http> -->
+    
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder hash="md5">
+            	<salt-source user-property="username"/>
+            </password-encoder>
+        </authentication-provider>
+    </authentication-manager>
+	
+	<!-- <authentication-manager alias="apiAuthenticationManager">
+        <authentication-provider>
+            <user-service>
+                <user name="#{jdbcConfiguration['restservice.username']}" password="#{jdbcConfiguration['restservice.password']}" authorities="ROLE_REST"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager> -->
+    
+	<beans:bean id="userDetailsService" class="com.til.security.acegi.AuthenticationJdbcDaoImpl">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="usersByUsernameQuery">
+			<beans:value>
+				select user.id,emailaddress,passphrase,isenabled,fullname,mobilenumber,validfrom,validtill,websiteid,roleid,sortorder,emailaddress1 from 
+				user join role join user_permission where user.id =	user_permission.userid and user_permission.roleid =
+				role.id and emailaddress = ? ORDER BY sortorder ASC 
+			</beans:value>
+		</beans:property>
+		<beans:property name="authoritiesByUsernameQuery">
+			<beans:value>
+				select distinct(role.id), emailaddress,rolename,sortorder from user join role join
+				user_permission where user.id =
+				user_permission.userid and user_permission.roleid =
+				role.id and emailaddress = ?
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+	
+	<util:properties id="restConfiguration" location="classpath:restservice-auth.properties" />
+	<context:property-placeholder properties-ref="restConfiguration"  />
+</beans:beans>
