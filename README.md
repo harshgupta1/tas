@@ -1,4 +1,6 @@
 tas
 ===
 
-This repository is used for all open source projects that i have developed
+Following Projects are checked-in
+
+1) Social Audience Manager
