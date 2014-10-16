@@ -529,7 +529,6 @@
 				  <threshold>Low</threshold>
 				  <xmlOutput>true</xmlOutput>
 				</configuration>
-				<!--
 				<executions>
 				  <execution>
 					<phase>verify</phase> 
@@ -538,7 +537,6 @@
 					</goals>
 				  </execution>
 				</executions>
-				-->
 			  </plugin>
 		</plugins>
 	</build>
