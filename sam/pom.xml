@@ -526,7 +526,7 @@
 			    <groupId>org.codehaus.mojo</groupId>
 			    <artifactId>findbugs-maven-plugin</artifactId>
 			    <version>2.5.5</version>
-			    <!-- 
+			    
 			    <executions>
 			        <execution>
 			           <id>findbugs</id>
@@ -536,7 +536,7 @@
 			           </goals>
 			        </execution>
 			    </executions>
-			     -->
+			    
 			    <configuration>
 			        <findbugsXmlOutputDirectory>target/findbugs</findbugsXmlOutputDirectory>
 			        <failOnError>false</failOnError>
@@ -550,7 +550,6 @@
 			     <version>1.0</version>
 			     <executions>
 			         <execution>
-						 <id>findbugs</id>
 			             <phase>verify</phase>
 			             <goals>
 			                <goal>transform</goal>
